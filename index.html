@@ -4,23 +4,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>A4→A5 両面冊子 並べ替えツール｜usePocket</title>
-<meta name="description" content="A4横向きのPDFを、A4用紙に2in1で両面印刷して中央で切るとA5の両面冊子になる順番（1→4→2→3、2・3ページ目を上下反転）に自動で並べ替える無料ツール。ブラウザだけで完結し、ファイルは送信されません。">
+<meta name="description" content="A4横向きのPDFを、A4用紙に2in1で両面印刷するとA5の両面冊子になる順番に自動で並べ替える無料ツール。中央で切って2つ穴バインダーでとじる方式（1→4→2→3）と、切らずに二つ折りしてホッチキスで留める方式（4→1→3→2）に対応。ブラウザだけで完結し、ファイルは送信されません。">
 <link rel="canonical" href="https://usepocket.com/a4toa5-2in1/">
 
 <!-- OGP / SNS共有用 -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="usePocket">
 <meta property="og:title" content="A4→A5 両面冊子 並べ替えツール">
-<meta property="og:description" content="A4横PDFを、2in1両面印刷→中央でカットするだけでA5両面冊子になる順番に自動で並べ替え。無料・インストール不要・ブラウザだけで完結。">
+<meta property="og:description" content="A4横PDFを、2in1両面印刷でA5両面冊子になる順番に自動で並べ替え。バインダー用（切って重ねる）とホッチキス用（切らずに折る）の2方式。無料・インストール不要・ブラウザだけで完結。">
 <meta property="og:url" content="https://usepocket.com/a4toa5-2in1/">
 <meta property="og:image" content="https://usepocket.com/a4toa5-2in1/ogp.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="A4横PDFのページ1・2・3・4を、1・4・2・3の順に並べ替え、2と3を上下反転する図">
+<meta property="og:image:alt" content="A4横PDFのページを4ページずつ並べ替え、2と3を上下反転してA5冊子用にする図">
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="A4→A5 両面冊子 並べ替えツール">
-<meta name="twitter:description" content="A4横PDFを、2in1両面印刷→中央でカットするだけでA5両面冊子になる順番に自動で並べ替え。">
+<meta name="twitter:description" content="A4横PDFを、2in1両面印刷でA5両面冊子になる順番に自動で並べ替え。バインダー用（切って重ねる）とホッチキス用（切らずに折る）の2方式。">
 <meta name="twitter:image" content="https://usepocket.com/a4toa5-2in1/ogp.png">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='14' width='52' height='36' rx='5' fill='%232f6fde'/%3E%3Cpath d='M6 32h52' stroke='%23fff' stroke-width='3' stroke-dasharray='5 4'/%3E%3C/svg%3E">
@@ -55,39 +55,50 @@
   h3{font-size:1.02rem;margin:0 0 6px}
   p{margin:0 0 12px}
 
-  /* 流れ図 */
-  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-  @media (max-width:720px){ .flow{grid-template-columns:1fr 1fr} }
-  @media (max-width:520px){ .flow{grid-template-columns:1fr;gap:20px} }
-  .step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;position:relative}
-  .step .no{position:absolute;top:-11px;left:14px;background:var(--accent);color:#fff;font-weight:800;
-    font-size:.8rem;border-radius:999px;padding:1px 10px}
-  .step p{font-size:.9rem;color:var(--muted);margin:0}
-  .viz{height:120px;display:flex;align-items:center;justify-content:center;gap:5px;margin:6px 0 10px}
+  /* 2つの作り方 */
+  .modes{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media (max-width:760px){ .modes{grid-template-columns:1fr} }
+  .mode{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column}
+  .mhead{display:flex;align-items:center;gap:10px}
+  .mhead h3{font-size:1.12rem;margin:0}
+  .mtag{background:var(--accent);color:#fff;font-weight:900;border-radius:8px;width:28px;height:28px;
+    display:flex;align-items:center;justify-content:center;flex:none}
+  .msub{color:var(--muted);font-size:.93rem;margin:6px 0 12px}
+  .mrow{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+  .mlbl{font-size:.78rem;color:var(--muted);width:3.6em;flex:none}
+  .pgs{display:flex;gap:5px}
+  .sheets{display:flex;gap:12px;align-items:flex-start}
+  .col{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.75rem;color:var(--muted)}
+  .col .arrow{height:104px;display:flex;align-items:center}
+  .leaves{flex-direction:row;gap:6px;height:104px;align-items:center}
+  .mode ul{margin:4px 0 16px;padding-left:1.2em;font-size:.92rem}
+  .mode ul li{margin-bottom:4px}
+  .mode .cta{margin-top:auto;align-self:flex-start}
+  .cta.small{font-size:.95rem;padding:10px 18px}
 
   .pg{width:44px;height:31px;border:2px solid #c9c3b6;border-radius:4px;background:#fff;color:#1d2433;
     display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1rem;flex:none}
   .pg.flip{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
   .pg.flip b{display:inline-block;transform:rotate(180deg)}
+  .pg .sep{font-weight:400;color:#c9c3b6;margin:0 3px}
   .sheet{width:74px;height:104px;background:#fff;border:2px solid #c9c3b6;border-radius:4px;
     display:flex;flex-direction:column;justify-content:space-around;align-items:center;position:relative}
   .sheet .pg{width:58px;height:41px;border-width:1.5px}
-  .sheet.cut::after{content:"";position:absolute;left:-10px;right:-10px;top:50%;border-top:2px dashed #d0453a}
-  .scissors{position:absolute;left:-26px;top:calc(50% - 13px);font-size:18px;color:#d0453a}
+  .sheet.cut::after{content:"";position:absolute;left:-4px;right:-4px;top:50%;border-top:2px dashed #d0453a}
+  .sheet.fold::after{content:"";position:absolute;left:-4px;right:-4px;top:50%;border-top:2px dashed var(--accent)}
+  .scissors{position:absolute;left:-22px;top:calc(50% - 13px);font-size:16px;color:#d0453a}
   .leaf{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.72rem;color:var(--muted)}
-  .leaf .pg{width:62px;height:44px}
+  .leaf .pg{width:auto;min-width:50px;padding:0 6px;height:36px}
   .arrow{color:var(--accent);font-weight:900}
-
-  /* 大きい説明図 */
-  .explain{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;background:var(--card);
-    border:1px solid var(--line);border-radius:16px;padding:22px}
-  @media (max-width:640px){ .explain{grid-template-columns:1fr} }
-  .bigsheet{display:flex;gap:18px;justify-content:center}
-  .bigsheet .col{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:.82rem;color:var(--muted)}
-  .bigsheet .sheet{width:104px;height:146px}
-  .bigsheet .sheet .pg{width:84px;height:59px;font-size:1.3rem}
-  .explain ul{margin:0;padding-left:1.2em}
-  .explain li{margin-bottom:6px}
+  .mode{min-width:0}
+  @media (max-width:480px){
+    .mode{padding:16px}
+    .mrow .mlbl{display:none}
+    .sheets{gap:7px}
+    .leaves .pg{min-width:42px;padding:0 4px}
+  }
+  ul.plain{margin:0;padding-left:1.2em}
+  ul.plain li{margin-bottom:8px}
 
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   @media (max-width:600px){ .grid{grid-template-columns:1fr} }
@@ -117,7 +128,7 @@
   <div class="wrap">
     <span class="tag">無料・インストール不要・登録不要</span>
     <h1>A4横のPDFを、<br>A5の両面冊子用に並べ替え</h1>
-    <p class="lead">A4横向きで作った資料を、<b>A4用紙に2in1で両面印刷 → 紙の中央で切る</b>だけで、そのままA5サイズの両面冊子になる順番にPDFを並べ替えます。処理はブラウザの中だけで行い、ファイルはどこにも送信されません。</p>
+    <p class="lead">A4横向きで作った資料を、<b>A4用紙に2in1で両面印刷</b>するだけでA5サイズの両面冊子になる順番にPDFを並べ替えます。<b>中央で切って2つ穴バインダーでとじる方式</b>と、<b>切らずに二つ折りしてホッチキスで留める方式</b>の2つから選べます。処理はブラウザの中だけで行い、ファイルはどこにも送信されません。</p>
     <a class="cta" href="app.html">ツールを開く <span aria-hidden="true">→</span></a>
     <span class="cta-note">パソコン・スマホのブラウザで使えます</span>
   </div>
@@ -125,61 +136,72 @@
 
 <main class="wrap">
 
-  <section id="flow">
-    <h2>どうやって冊子になるの？</h2>
-    <div class="flow">
-      <div class="step"><span class="no">1</span>
-        <div class="viz"><div class="pg"><b>1</b></div><div class="pg"><b>2</b></div><div class="pg"><b>3</b></div><div class="pg"><b>4</b></div></div>
-        <h3>A4横のPDFを用意</h3>
-        <p>普通に1ページ目から順に作ったA4横向きのPDF。</p>
+  <section id="modes">
+    <h2>2つの作り方</h2>
+    <div class="modes">
+      <div class="mode">
+        <div class="mhead"><span class="mtag">A</span><h3>2つ穴バインダー等用</h3></div>
+        <p class="msub">中央で<b>切って</b>重ね、穴をあけてとじる</p>
+        <div class="mrow"><span class="mlbl">並び順</span>
+          <div class="pgs"><div class="pg"><b>1</b></div><div class="pg"><b>4</b></div><div class="pg flip"><b>2</b></div><div class="pg flip"><b>3</b></div></div></div>
+        <div class="mrow"><span class="mlbl">A4用紙</span>
+          <div class="sheets">
+            <div class="col"><div class="sheet cut"><span class="scissors">✂</span><div class="pg"><b>1</b></div><div class="pg"><b>4</b></div></div>表</div>
+            <div class="col"><div class="sheet cut"><div class="pg flip"><b>2</b></div><div class="pg flip"><b>3</b></div></div>裏</div>
+            <div class="col"><div class="arrow">→</div></div>
+            <div class="col leaves"><div class="leaf"><div class="pg"><b>1</b></div>裏が2</div><div class="leaf"><div class="pg"><b>3</b></div>裏が4</div></div>
+          </div></div>
+        <ul>
+          <li>紙の中央（赤い線）で切ると「表1／裏2」と「表4／裏3」の2枚になります。</li>
+          <li>下半分の紙は3ページ側を上にして重ねると、1〜4ページの順に読めます。</li>
+          <li>1枚ずつばらばらになるので、2つ穴バインダーやファイルにとじるのに向いています。</li>
+        </ul>
+        <a class="cta small" href="app.html#binder">この方式で使う <span aria-hidden="true">→</span></a>
       </div>
-      <div class="step"><span class="no">2</span>
-        <div class="viz"><div class="pg"><b>1</b></div><div class="pg"><b>4</b></div><div class="pg flip"><b>2</b></div><div class="pg flip"><b>3</b></div></div>
-        <h3>このツールで並べ替え</h3>
-        <p>4ページずつ 1→4→2→3 の順にして、2・3ページ目を上下反転。</p>
-      </div>
-      <div class="step"><span class="no">3</span>
-        <div class="viz"><div class="sheet cut"><span class="scissors">✂</span><div class="pg"><b>1</b></div><div class="pg"><b>4</b></div></div></div>
-        <h3>2in1で両面印刷して中央をカット</h3>
-        <p>A4用紙1枚に2ページずつ、両面で印刷。紙の真ん中で切ります。</p>
-      </div>
-      <div class="step"><span class="no">4</span>
-        <div class="viz">
-          <div class="leaf"><div class="pg"><b>1</b></div>裏が2</div>
-          <div class="leaf"><div class="pg"><b>3</b></div>裏が4</div>
-        </div>
-        <h3>重ねればA5の両面冊子</h3>
-        <p>切った2枚を重ねると、1〜4ページが順番どおりに読めます。</p>
+
+      <div class="mode">
+        <div class="mhead"><span class="mtag">B</span><h3>切断無しホッチキス留め用</h3></div>
+        <p class="msub"><b>切らずに</b>二つ折りにし、重ねてホッチキスで留める</p>
+        <div class="mrow"><span class="mlbl">並び順</span>
+          <div class="pgs"><div class="pg"><b>4</b></div><div class="pg"><b>1</b></div><div class="pg flip"><b>3</b></div><div class="pg flip"><b>2</b></div></div></div>
+        <div class="mrow"><span class="mlbl">A4用紙</span>
+          <div class="sheets">
+            <div class="col"><div class="sheet fold"><div class="pg"><b>4</b></div><div class="pg"><b>1</b></div></div>表</div>
+            <div class="col"><div class="sheet fold"><div class="pg flip"><b>3</b></div><div class="pg flip"><b>2</b></div></div>裏</div>
+            <div class="col"><div class="arrow">→</div></div>
+            <div class="col leaves"><div class="leaf"><div class="pg"><b>1</b></div>表紙</div><div class="leaf"><div class="pg"><b>2</b><b class="sep">|</b><b>3</b></div>中</div></div>
+          </div></div>
+        <ul>
+          <li>紙の中央（青い線）で、1ページ目が外側になるように二つ折りにします。</li>
+          <li>開くと内側に2・3ページ目、裏表紙が4ページ目になります。</li>
+          <li>折った紙を順に重ねて折り目側をホッチキスで留めれば、切らずに冊子になります。</li>
+        </ul>
+        <a class="cta small" href="app.html#staple">この方式で使う <span aria-hidden="true">→</span></a>
       </div>
     </div>
   </section>
 
   <section id="why">
-    <h2>なぜこの順番なのか</h2>
-    <div class="explain">
-      <div class="bigsheet">
-        <div class="col"><div class="sheet cut"><div class="pg"><b>1</b></div><div class="pg"><b>4</b></div></div>A4用紙の表</div>
-        <div class="col"><div class="sheet cut"><div class="pg flip"><b>2</b></div><div class="pg flip"><b>3</b></div></div>A4用紙の裏</div>
-      </div>
-      <ul>
-        <li>2in1印刷では、並べ替えたPDFの <b>1・4ページ目が表面</b>、<b>2・3ページ目が裏面</b> に入ります。</li>
-        <li>中央で切ると、上半分が <b>表1／裏2</b>、下半分が <b>表4／裏3</b> の2枚に分かれます。下半分の紙は3ページ側を上にして重ねます。</li>
-        <li>裏面の2・3ページ目はあらかじめ上下反転しておくことで、切った紙をめくったときに正しい向きで読めます。</li>
-        <li>5ページ目以降も4ページずつ同じように並ぶので、A4用紙1枚ごとにA5の紙が2枚でき、順に重ねれば何ページでも冊子にできます。</li>
-      </ul>
-    </div>
+    <h2>共通のしくみ</h2>
+    <ul class="plain">
+      <li>2in1印刷では、並べ替えたPDFの4ページのうち <b>前の2ページがA4用紙の表面</b>、<b>後ろの2ページが裏面</b> に入ります。</li>
+      <li>裏面に来るページ（元の2・3ページ目）は、あらかじめ上下反転しておくことで、紙をめくったときに正しい向きで読めます。</li>
+      <li>5ページ目以降も4ページずつ同じように並ぶので、A4用紙1枚ごとに4ページ分ができ、順に重ねれば何ページでも冊子にできます。</li>
+      <li>ページ数が4の倍数でないときは白紙を自動で足して、最後の用紙も同じ形にそろえます。</li>
+    </ul>
   </section>
 
   <section id="howto">
     <h2>使い方</h2>
     <ol class="howto">
-      <li><a href="app.html">ツール</a>を開き、A4横向きのPDFをドロップ（またはタップして選択）します。</li>
+      <li><a href="app.html">ツール</a>を開き、作り方（<b>2つ穴バインダー等用</b>／<b>切断無しホッチキス留め用</b>）を選びます。</li>
+      <li>A4横向きのPDFをドロップ（またはタップして選択）します。</li>
       <li>並べ替え後の順番が表示されるので確認します。逆さの青い数字が上下反転するページです。</li>
-      <li>「並べ替えてPDFを保存」を押すと、<code>（元の名前）_並べ替え.pdf</code> が保存されます。</li>
+      <li>「並べ替えてPDFを保存」を押すと、<code>（元の名前）_バインダー用.pdf</code> または <code>_ホッチキス用.pdf</code> が保存されます。</li>
       <li>保存したPDFを、A4用紙に <b>2in1（1枚に2ページ）</b>・<b>両面印刷</b> で印刷します。</li>
-      <li>紙の中央で切り、ページ順に重ねてとじれば完成です。</li>
+      <li>バインダー用は中央で切って重ね、ホッチキス用は切らずに二つ折りにして重ね、それぞれとじれば完成です。</li>
     </ol>
-    <p class="note" style="margin-top:16px"><b>印刷のコツ：</b>両面印刷の「とじ方向（長辺とじ／短辺とじ）」によって裏面の向きが変わります。プリンターによって設定の呼び方も違うため、最初に1枚だけ試し刷りして、切ったあとに裏面が正しい向きで読める設定を確認してください。</p>
+    <p class="note" style="margin-top:16px"><b>印刷のコツ：</b>両面印刷の「とじ方向（長辺とじ／短辺とじ）」によって裏面の向きが変わります。プリンターによって設定の呼び方も違うため、最初に1枚だけ試し刷りして、切ったり折ったりしたあとに裏面が正しい向きで読める設定を確認してください。</p>
   </section>
 
   <section id="features">
@@ -194,6 +216,8 @@
 
   <section id="faq">
     <h2>よくある質問</h2>
+    <details><summary>どちらの方式を選べばいいですか？</summary>
+      <p>ページを1枚ずつバインダーやファイルにとじたいときは「2つ穴バインダー等用」、はさみやカッターを使わずにホッチキスだけで手早く冊子にしたいときは「切断無しホッチキス留め用」がおすすめです。</p></details>
     <details><summary>A4縦のPDFでも使えますか？</summary>
       <p>並べ替えと反転は向きに関係なく行えますが、このツールはA4横の原稿をA5冊子にする前提で作っています。A4横以外のページがあると画面にお知らせが出ます。</p></details>
     <details><summary>パスワード付きのPDFは使えますか？</summary>
