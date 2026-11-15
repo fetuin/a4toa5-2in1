@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>A4→A5 両面冊子 並べ替えツール｜usePocket</title>
 <meta name="description" content="A4横向きのPDFを、A4用紙に2in1で両面印刷するとA5の両面冊子になる順番に自動で並べ替える無料ツール。中央で切って2つ穴バインダーでとじる方式（1→4→2→3）と、切らずに二つ折りしてホッチキスで留める方式（4→1→3→2）に対応。ブラウザだけで完結し、ファイルは送信されません。">
-<link rel="canonical" href="https://usepocket.com/a4toa5-2in1/">
+<link rel="canonical" href="https://fetuin.moo.jp/a4toa5-2in1/">
 
 <!-- OGP / SNS共有用 -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="usePocket">
 <meta property="og:title" content="A4→A5 両面冊子 並べ替えツール">
 <meta property="og:description" content="A4横PDFを、2in1両面印刷でA5両面冊子になる順番に自動で並べ替え。バインダー用（切って重ねる）とホッチキス用（切らずに折る）の2方式。無料・インストール不要・ブラウザだけで完結。">
-<meta property="og:url" content="https://usepocket.com/a4toa5-2in1/">
-<meta property="og:image" content="https://usepocket.com/a4toa5-2in1/ogp.png">
+<meta property="og:url" content="https://fetuin.moo.jp/a4toa5-2in1/">
+<meta property="og:image" content="https://fetuin.moo.jp/a4toa5-2in1/ogp.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="A4横PDFのページを4ページずつ並べ替え、2と3を上下反転してA5冊子用にする図">
@@ -21,7 +21,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="A4→A5 両面冊子 並べ替えツール">
 <meta name="twitter:description" content="A4横PDFを、2in1両面印刷でA5両面冊子になる順番に自動で並べ替え。バインダー用（切って重ねる）とホッチキス用（切らずに折る）の2方式。">
-<meta name="twitter:image" content="https://usepocket.com/a4toa5-2in1/ogp.png">
+<meta name="twitter:image" content="https://fetuin.moo.jp/a4toa5-2in1/ogp.png">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='14' width='52' height='36' rx='5' fill='%232f6fde'/%3E%3Cpath d='M6 32h52' stroke='%23fff' stroke-width='3' stroke-dasharray='5 4'/%3E%3C/svg%3E">
 <style>
@@ -245,11 +245,12 @@
 </footer>
 
 <script>
-// アクセスカウンター（同じフォルダの counter.cgi を使用。同じタブでの再読み込みは数えない）
+// アクセスカウンター（usePocket の汎用カウンターを使用。同じタブでの再読み込みは数えない）
 (function () {
+  var COUNTER = "https://usepocket.com/api/counter.cgi?page=a4toa5-2in1";
   var first = true;
   try { first = !sessionStorage.getItem("a4a5_counted"); sessionStorage.setItem("a4a5_counted", "1"); } catch (e) {}
-  fetch("counter.cgi" + (first ? "?inc=1" : ""), { cache: "no-store" })
+  fetch(COUNTER + (first ? "" : "&mode=view"), { cache: "no-store" })
     .then(function (r) { if (!r.ok) throw 0; return r.json(); })
     .then(function (d) {
       if (typeof d.total !== "number") return;

@@ -43,29 +43,24 @@ A4横向きのPDFを、**A4用紙に2in1で両面印刷** するだけで A5 の
 |---|---|
 | `index.html` | 配布用の説明ページ（アクセスカウンター、OGPタグ付き） |
 | `app.html` | ツール本体（[pdf-lib](https://pdf-lib.js.org/) を CDN から読み込み） |
-| `counter.cgi` | アクセスカウンター（Perl CGI、JSONを返す） |
 | `ogp.png` | SNSでリンクを共有したときの代表画像（1200×630） |
 
-## 設置方法（さくら・ロリポップなどのレンタルサーバー）
+## 設置
 
-1. ファイル一式を公開フォルダ（例: `https://usepocket.com/a4toa5-2in1/`）にアップロード
-2. `counter.cgi` のパーミッションを **755**（ロリポップは 700 でも可）に設定
-   - 改行コードは LF のままアップロードしてください
-   - カウント数は同じフォルダの `counter.dat` に自動で保存されます（初回アクセス時に作成）
-3. 設置先URLが `https://usepocket.com/a4toa5-2in1/` と違う場合は、`index.html` と `app.html` の
-   `og:url` / `og:image` / `twitter:image` / `canonical` のURLを書き換えてください（OGP画像は絶対URLが必要です）
+- 設置先: https://fetuin.moo.jp/a4toa5-2in1/
+- 上の3ファイルを公開フォルダにアップロードするだけで動きます（CGI不要）。
+- 設置先URLを変える場合は、`index.html` と `app.html` の `og:url` / `og:image` / `twitter:image` / `canonical` を書き換えてください（OGP画像は絶対URLが必要です）。
 
-CGIが動かない環境（GitHub Pages など）では、カウンターは自動で非表示になり、ツール自体はそのまま使えます。
+### アクセスカウンター
 
-### counter.cgi の使い方
+usePocket の汎用カウンター `https://usepocket.com/api/counter.cgi` をページタグ `a4toa5-2in1` で使っています。
 
 ```
-counter.cgi        → 現在の数を返す（数えない）
-counter.cgi?inc=1  → 1増やしてから返す
-返り値: {"total":123,"today":4}
+counter.cgi?page=a4toa5-2in1            → 1回数えてJSONを返す（同じIPの1時間以内の再訪は数えない）
+counter.cgi?page=a4toa5-2in1&mode=view  → 数えずに現在の値を返す
 ```
 
-説明ページは同じタブ内での再読み込みを二重に数えません（sessionStorage を使用）。
+説明ページは、同じタブでの再読み込みでは `mode=view` で値だけ取得します。カウンターに接続できないときは表示しません。
 
 ## 開発元
 
